@@ -11,6 +11,18 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { withStyles} from '@material-ui/core/styles';
 import axios from 'axios';
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import dayjs from 'dayjs'
+
+const today=new Date();
+const minimumDate = (today.getHours()<18 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
 
 export const Signup = () => {
   const validate = Yup.object({
@@ -26,9 +38,9 @@ export const Signup = () => {
     department: Yup.string()
       .max(15, 'Must be 15 characters or less')
       .required('Department is required'),
-    date: Yup.string()
-      .max(20, 'Must be 20 characters or less')
-      .required('Date is required'),
+    // date: Yup.string()
+    //   .max(20, 'Must be 20 characters or less')
+    //   .required('Date is required'),
   
   })
 
@@ -51,14 +63,26 @@ export const Signup = () => {
 
   const [departmentList, setDepartmentList] = useState([]);
   const [locationList, setLocationList] = useState([]);
+  const[hour, setHour]=React.useState();
+  const [selectedDate, setSelectedDate] = React.useState(today.getHours()<18 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
 
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
   const classes = useStyles();
 
   useEffect(() => {
     
     getdistslotdata();
+    const h=(new Date().getHours());
+    setHour(h);
     
   }, []);
+
+  
+
+
 
   const getdistslotdata = () => {
     
@@ -78,7 +102,7 @@ export const Signup = () => {
   };
 
   const bookSlot = (fullName,date,email,location,department) => {
-    
+   
     axios
       .post("http://api.gathan.in:8181//SlotBooking/bookslot", {
         location:location,
@@ -104,13 +128,30 @@ export const Signup = () => {
         email: '',
         location:'',
         department:'',
-        date:''
+        // date:''
        
       }}
       validationSchema={validate}
       onSubmit={values => {
+       
+          console.log(minimumDate);
+          console.log(selectedDate);
+        if(dayjs(selectedDate).isBefore(dayjs(minimumDate)) ){
+          alert("Date is less than minimum date");
+          return;
+        }
+        const year=(selectedDate.getFullYear());
+        const month=(selectedDate.getMonth()+1);
+        const date=(selectedDate.getDate());
+        
+       
+          let finalDate= (year+"-"+month+"-"+date);
+          
+          console.log(finalDate);
+          console.log(typeof(finalDate));
+        
         console.log(values);
-        bookSlot(values.fullName,values.date,values.email,values.location,values.department)
+        bookSlot(values.fullName,finalDate,values.email,values.location,values.department)
       }}
     >
       {formik => (
@@ -146,13 +187,14 @@ export const Signup = () => {
               error={(formik.touched.email) && Boolean(formik.errors.email)}
               helperText={(formik.touched.email) && formik.errors.email}
             />
-             <TextField
+             {/* <TextField
              fullWidth
              required
             id="date"
             name="date"
             label="Date"
             type="date"
+            minDate={new Date().toISOString().split("T")[0]}
             variant="outlined"
             className={classes.textField}
             value={formik.values.date}
@@ -162,7 +204,36 @@ export const Signup = () => {
             InputLabelProps={{
               shrink: true,
             }}
-          />
+          /> */}
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+          className={classes.textField}
+          fullWidth
+          required
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date"
+          name="date"
+          label="Date"
+          
+          
+          minDate={minimumDate}
+          // value={formik.values.date}
+          // onChange={formik.handleChange}
+          // error={(formik.touched.date) && Boolean(formik.errors.date)}
+          // helperText={(formik.touched.date) && formik.errors.date}
+          value={selectedDate}
+          onChange={handleDateChange}
+
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+         </MuiPickersUtilsProvider>
+         
 
           
 
