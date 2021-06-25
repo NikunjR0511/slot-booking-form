@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize:"3.4rem",
         margin:"24px 0",
         color:"#343A40",
+       },
+       availableSlotButton:{
+        marginTop:"15px",
+        marginLeft:"80px"
        }
     
    

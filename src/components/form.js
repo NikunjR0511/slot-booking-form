@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, } from 'formik';
 import * as Yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -20,6 +20,10 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import dayjs from 'dayjs'
+import Table from './table';
+import peopleImg from '../assets/People collaborating remotely.svg';
+
+
 
 const today=new Date();
 const minimumDate = (today.getHours()<18 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
@@ -63,6 +67,8 @@ export const Signup = () => {
 
   const [departmentList, setDepartmentList] = useState([]);
   const [locationList, setLocationList] = useState([]);
+  const [availableSlot, settAvailableSlot] = useState([]);
+
   const[hour, setHour]=React.useState();
   const [selectedDate, setSelectedDate] = React.useState(today.getHours()<18 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
 
@@ -77,6 +83,8 @@ export const Signup = () => {
     getdistslotdata();
     const h=(new Date().getHours());
     setHour(h);
+    console.log(availableSlot.length);
+    console.log(availableSlot);
     
   }, []);
 
@@ -114,7 +122,21 @@ export const Signup = () => {
       .then((res) => {
         const items = res.data;
         alert(items);
-        console.log('per final API Call');
+        // console.log('per final API Call');
+      }).catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const availableSlots = () => {
+    axios
+      .post("http://api.gathan.in:8181//SlotBooking/showavaliableslots2", {
+      },{  headers: {'Access-Control-Allow-Origin': '*'}})
+      .then((res) => {
+        const items = res.data;
+        settAvailableSlot(items);
+        console.log(items);
+        console.log('per avalable slot API Call');
       }).catch((err) => {
         console.log(err);
       });
@@ -122,6 +144,10 @@ export const Signup = () => {
  
 
   return (
+    <>
+     <div className="container mt-3">
+      <div className="row">
+        <div className="col-md-5">
     <Formik
       initialValues={{
         fullName: '',
@@ -132,8 +158,8 @@ export const Signup = () => {
        
       }}
       validationSchema={validate}
-      onSubmit={values => {
-       
+      onSubmit=  {values  => {
+        
           console.log(minimumDate);
           console.log(selectedDate);
         if(dayjs(selectedDate).isBefore(dayjs(minimumDate)) ){
@@ -168,7 +194,7 @@ export const Signup = () => {
               name="fullName"
               label="Full  Name"
               variant="outlined"
-              value={formik.values.fullName}
+              value={formik.values.fullName }
               onChange={formik.handleChange}
               error={(formik.touched.fullName) && Boolean(formik.errors.fullName)}
               helperText={(formik.touched.fullName) && formik.errors.fullName}
@@ -182,7 +208,7 @@ export const Signup = () => {
               name="email"
               label="Email"
               variant="outlined"
-              value={formik.values.email}
+              value={formik.values.email }
               onChange={formik.handleChange}
               error={(formik.touched.email) && Boolean(formik.errors.email)}
               helperText={(formik.touched.email) && formik.errors.email}
@@ -259,7 +285,7 @@ export const Signup = () => {
         </FormControl>
         
         <FormControl variant="outlined" className={classes.textField}fullWidth >
-        <InputLabel id="demo-simple-select-outlined-label">Department</InputLabel>
+        <InputLabel id="demo-simple-select-outlined-label">Brand</InputLabel>
         <Select
         required
           id="department"
@@ -285,9 +311,32 @@ export const Signup = () => {
 
             <button className="btn btn-dark mt-3" type="submit">Register</button>
             <button className="btn btn-danger mt-3 ml-3" type="reset">Reset</button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.availableSlotButton}
+              onClick={() => {
+               availableSlots();
+              }}>
+              Show Available Slots
+            </Button>
           </Form>
         </div>
       )}
     </Formik>
+    </div>
+        <div className="col-md-7 my-auto">
+          <img className="img-fluid w-100" src={peopleImg} alt=""/>
+        </div>
+       
+      </div>  
+
+      {(availableSlot.length>0) && (
+        <Table availableSlot={availableSlot} />
+      )}
+      </div>
+   
+    </>
   )
 }
