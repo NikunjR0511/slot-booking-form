@@ -158,7 +158,7 @@ export const Signup = () => {
        
       }}
       validationSchema={validate}
-      onSubmit=  {values  => {
+      onSubmit=  {(values, {resetForm})  => {
         
           console.log(minimumDate);
           console.log(selectedDate);
@@ -178,6 +178,7 @@ export const Signup = () => {
         
         console.log(values);
         bookSlot(values.fullName,finalDate,values.email,values.location,values.department)
+        resetForm({values:''})
       }}
     >
       {formik => (

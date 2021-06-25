@@ -59,12 +59,13 @@ export default function BasicTable(props) {
            
 
             <TableCell className={classes.head}>Date </TableCell>
-            <TableCell align="center" className={classes.head}>Bangalore-Quantira </TableCell>
+           
             <TableCell align="center" className={classes.head}>Gurgaon-Indxx</TableCell>
+            <TableCell align="center" className={classes.head}>Gurgaon-Quantira</TableCell> 
             <TableCell align="center" className={classes.head}>Hyderabad-Indxx</TableCell>
             <TableCell align="center" className={classes.head}>Hyderabad-Quantira</TableCell>
-            <TableCell align="center" className={classes.head}>Gurgaon-Quantira</TableCell> 
             <TableCell align="center" className={classes.head}>Bangalore-Indxx</TableCell>
+            <TableCell align="center" className={classes.head}>Bangalore-Quantira </TableCell>
            
         
           </TableRow>
@@ -76,15 +77,16 @@ export default function BasicTable(props) {
                <TableCell component="th" scope="row" >
                 {row.date}
               </TableCell>
-              <TableCell align="center">{row.bangaloreQuantira}</TableCell>
+              
              
             <TableCell align="center">{row.gurgaonIndxx}</TableCell>
-           
+            <TableCell align="center">{row.gurgaonQuantira}</TableCell>
              <TableCell align="center">{row.hyderabadIndxx}</TableCell>
             
             <TableCell align="center">{row.hyderabadQuantira}</TableCell>
-            <TableCell align="center">{row.gurgaonQuantira}</TableCell>
+            
             <TableCell align="center">{row.bangaloreIndxx}</TableCell>
+            <TableCell align="center">{row.bangaloreQuantira}</TableCell>
             
            
             </TableRow>
