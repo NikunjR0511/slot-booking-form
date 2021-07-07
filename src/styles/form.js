@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
        },
        availableSlotButton:{
         marginTop:"15px",
-        marginLeft:"80px"
+        marginLeft:"80px",
+     
        }
     
    

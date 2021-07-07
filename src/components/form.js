@@ -26,7 +26,7 @@ import peopleImg from '../assets/People collaborating remotely.svg';
 
 
 const today=new Date();
-const minimumDate = (today.getHours()<18 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
+const minimumDate = (today.getHours()<19 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
 
 export const Signup = () => {
   const validate = Yup.object({
@@ -70,8 +70,8 @@ export const Signup = () => {
   const [availableSlot, settAvailableSlot] = useState([]);
 
   const[hour, setHour]=React.useState();
-  const [selectedDate, setSelectedDate] = React.useState(today.getHours()<18 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
-
+  const [selectedDate, setSelectedDate] = React.useState(today.getHours()<19? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
+  // console.log(today.getHours()<10)
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -183,7 +183,7 @@ export const Signup = () => {
     >
       {formik => (
         <div>
-          <h1 className={classes.textField}>Fix Your Slot</h1>
+          <h1 className={classes.textField}>Book Your Slot</h1>
           <Form>
            
              
