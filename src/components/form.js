@@ -26,7 +26,7 @@ import peopleImg from '../assets/People collaborating remotely.svg';
 
 
 const today=new Date();
-const minimumDate = (today.getHours()<19 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
+const minimumDate = (today.getHours()<18 ? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
 
 export const Signup = () => {
   const validate = Yup.object({
@@ -70,7 +70,7 @@ export const Signup = () => {
   const [availableSlot, settAvailableSlot] = useState([]);
 
   const[hour, setHour]=React.useState();
-  const [selectedDate, setSelectedDate] = React.useState(today.getHours()<19? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
+  const [selectedDate, setSelectedDate] = React.useState(today.getHours()<18? new Date(new Date().getTime() + (24 * 60 * 60 * 1000)): new Date(new Date().getTime() + 2*(24 * 60 * 60 * 1000)));
   // console.log(today.getHours()<10)
 
   const handleDateChange = (date) => {
@@ -160,10 +160,16 @@ export const Signup = () => {
       validationSchema={validate}
       onSubmit=  {(values, {resetForm})  => {
         
-          console.log(minimumDate);
+          // console.log(minimumDate);
+          // console.log(selectedDate);
+          minimumDate.setHours(0, 0, 0, 0);
+          selectedDate.setHours(0, 0, 0, 0);
           console.log(selectedDate);
+          console.log(minimumDate); 
         if(dayjs(selectedDate).isBefore(dayjs(minimumDate)) ){
-          alert("Date is less than minimum date");
+          console.log(selectedDate);
+          console.log(minimumDate);
+          alert("Slot can not be booked for the selected date");
           return;
         }
         const year=(selectedDate.getFullYear());
@@ -171,7 +177,7 @@ export const Signup = () => {
         const date=(selectedDate.getDate());
         
        
-          let finalDate= (year+"-"+month+"-"+date);
+          let finalDate= (year+"-"+month+"-"+date); 
           
           console.log(finalDate);
           console.log(typeof(finalDate));
