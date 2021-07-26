@@ -95,7 +95,7 @@ export const Signup = () => {
   const getdistslotdata = () => {
     
     axios
-      .post("http://api.gathan.in:8181//SlotBooking/getdistslotdata", {
+      .post("http://quantira.gathan.in:8000//SlotBooking/getdistslotdata", {
       },{  headers: {'Access-Control-Allow-Origin': '*'}})
       .then((res) => {
         const items = res.data;
@@ -112,7 +112,7 @@ export const Signup = () => {
   const bookSlot = (fullName,date,email,location,department) => {
    
     axios
-      .post("http://api.gathan.in:8181//SlotBooking/bookslot", {
+      .post("http://quantira.gathan.in:8000//SlotBooking/bookslot", {
         location:location,
         department:department,
         name:fullName,
@@ -130,7 +130,7 @@ export const Signup = () => {
 
   const availableSlots = () => {
     axios
-      .post("http://api.gathan.in:8181//SlotBooking/showavaliableslots2", {
+      .post("http://quantira.gathan.in:8000//SlotBooking/showavaliableslots2", {
       },{  headers: {'Access-Control-Allow-Origin': '*'}})
       .then((res) => {
         const items = res.data;
