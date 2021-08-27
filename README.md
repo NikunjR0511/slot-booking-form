@@ -1,14 +1,8 @@
 # Signup form with formik
 Create simple signup form with formik and use yup for the validation
 
-## screenshot
-![Signup screenshott](./src/assets/signup.png)
-
 ## Links
 Formik : https://formik.org <br/>
-
-### Video Tutorial
-You can see my youtube video for this project in [here](https://youtu.be/u-CCnDayNJw)
 
 
 ## Available Scripts
